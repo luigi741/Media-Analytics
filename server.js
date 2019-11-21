@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 
 app.get('/sql', (req, res) => {
 	console.log('GET /sql');
-	var pQuery = 'SELECT * FROM clients;';
+	var pQuery = 'SELECT * FROM tweets;';
 	
 	pool.query(pQuery, (err, result) => {
 		if (err) {
