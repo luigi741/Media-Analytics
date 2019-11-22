@@ -100,7 +100,7 @@ app.post('/testinsert', (req, res) => {
 
 app.post('/cleartweets', (req, res) => {
 	console.log('POST /cleartweets');
-	var pQuery = "DELETE * FROM table_name;";
+	var pQuery = "DELETE FROM tweets;";
 
 	pool.query(pQuery, (err, results) => {
 		if (err) {
