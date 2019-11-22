@@ -99,7 +99,7 @@ app.get('/tweets', (req, res) => {
 	console.log(req.query);
 	// const twitterAPI = 'https://api.twitter.com/1.1/search/tweets.json?q=%23ai%20-filter%3Aretweets&result_type=recent&tweet_mode=extended';
 
-	const twitterAPI = `https://api.twitter.com/1.1/search/tweets.json?q=3%23${req.query.keyword}%20-filter%3Aretweets&result_type=popular&tweet_mode=extended`;
+	const twitterAPI = `https://api.twitter.com/1.1/search/tweets.json?q=3%23${req.query.keyword}%20-filter%3Aretweets&result_type=popular&tweet_mode=extended&lang=en`;
 
 	var options = {
 		url: twitterAPI,
@@ -133,6 +133,8 @@ app.get('/tweets', (req, res) => {
 				// }
 				// console.log(statuses[i].full_text + '\n');
 				// console.log(statuses[i].user.screen_name);
+				if (statuses[i].user.locale)
+				
 				link  = 'https://twitter.com/' + statuses[i].user.screen_name + '/status/' + statuses[i].id_str;
 				hashtags = statuses[i].entities.hashtags[0].text;
 				for (var k = 1; k < statuses[i].entities.hashtags.length; k++){
