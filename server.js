@@ -53,8 +53,8 @@ app.get('/schema', (req, res) => {
 		else {
 			for (var n = 0; n < result.rows.length; n++) {
 				console.log(result.rows[n]);
-				res.send(result.rows[n]);
 			}
+			res.send('schema sent');
 		}
 	}); 
 });
