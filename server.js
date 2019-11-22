@@ -35,7 +35,9 @@ app.get('/sql', (req, res) => {
 			res.send(err);
 		}
 		else {
-			console.log(result.rows[0]);
+			for (var n = 0; n < result.rows.length; n++) {
+				console.log(result.rows[n]);
+			}
 			res.send(result.rows[0]);
 		}
 	}); 
@@ -112,14 +114,34 @@ app.get('/tweets', (req, res) => {
 			var statuses = info.statuses
 			
 			console.log(`Posts: ${statuses.length}`);
+
+			var pQuery;
+			var link;
+			var hashtags;
+			var description;
+			var username;
+			// = "INSERT INTO tweets VALUES ('twitter.com', 'test', 'ai', 'AI is cool');";
+
+			//'CREATE TABLE tweets( username varchar(255), url varchar(255) PRIMARY KEY, hashtag varchar(255), score numeric(2,1), description varchar);'
+
 			for (var i = 0; i < statuses.length; i++) {
 				//console.log(statuses[i]); Prints .json for debugging
-				console.log('https://twitter.com/' + statuses[i].user.screen_name + '/status/' + statuses[i].id_str);
-				for (var k = 0; k < statuses[i].entities.hashtags.length; k++){
-					console.log(statuses[i].entities.hashtags[k].text + ', ');
-				}
-				console.log(statuses[i].full_text + '\n');
-				console.log(statuses[i].user.screen_name);
+				// console.log('https://twitter.com/' + statuses[i].user.screen_name + '/status/' + statuses[i].id_str);
+				// for (var k = 0; k < statuses[i].entities.hashtags.length; k++){
+				// 	console.log(statuses[i].entities.hashtags[k].text + ', ');
+				// }
+				// console.log(statuses[i].full_text + '\n');
+				// console.log(statuses[i].user.screen_name);
+				pQuery = "INSERT INTO tweets VALUES('" + username + "', '" + link + "', '" + hashtags + "', '" + score + "', '" + description + "');";
+				pool.query(pQuery, (err, results) => {
+					if (err) {
+						console.log(err);
+						res.send(err);
+					}
+					else {
+						console.log('Successful insert!');
+					}
+				});
 			}
 			console.log('Twitter API success.');
 
