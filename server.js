@@ -43,7 +43,7 @@ app.get('/sql', (req, res) => {
 
 app.get('/schema', (req, res) => {
 	console.log('GET /schema');
-	var pQuery = 'SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_NAME = \'tweets\';';
+	var pQuery = 'SELECT * FROM information_schema.COLUMNS WHERE TABLE_NAME = \'tweets\';';
 	
 	pool.query(pQuery, (err, result) => {
 		if (err) {
