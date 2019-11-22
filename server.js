@@ -206,8 +206,8 @@ app.post('/testinsert', (req, res) => {
 });
 
 
-app.post('/cleartweets', (req, res) => {
-	console.log('POST /cleartweets');
+app.get('/cleartweets', (req, res) => {
+	console.log('GET /cleartweets');
 	var pQuery = "DELETE FROM tweets;";
 
 	pool.query(pQuery, (err, results) => {
