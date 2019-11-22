@@ -51,8 +51,10 @@ app.get('/schema', (req, res) => {
 			res.send(err);
 		}
 		else {
-			console.log(result.rows[0]);
-			res.send(result.rows[0]);
+			for (var n = 0; n < results.rows.length; n++) {
+				console.log(result.rows[n]);
+				res.send(result.rows[n]);
+			}
 		}
 	}); 
 });
