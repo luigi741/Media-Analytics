@@ -43,7 +43,7 @@ app.get('/sql', (req, res) => {
 
 app.get('/schema', (req, res) => {
 	console.log('GET /schema');
-	var pQuery = 'SELECT * FROM information_schema.COLUMNS WHERE TABLE_NAME = \'tweets\';';
+	var pQuery = 'SELECT column_name, data_type, character_maximum_length FROM INFORMATION_SCHEMA.COLUMNS where table_name = \'tweets\';';
 	
 	pool.query(pQuery, (err, result) => {
 		if (err) {
@@ -53,6 +53,38 @@ app.get('/schema', (req, res) => {
 		else {
 			console.log(result.rows[0]);
 			res.send(result.rows[0]);
+		}
+	}); 
+});
+
+app.get('/droptweets', (req, res) => {
+	console.log('GET /droptweets');
+	var pQuery = 'DROP TABLE IF EXISTS tweets';
+	pool.query(pQuery, (err, result) => {
+		if (err) {
+			console.log(err);
+			res.send(err);
+		}
+		else {
+			console.log('tweets table has been dropped');
+			res.send('tweets table has been dropped');
+		}
+	}); 
+});
+
+
+app.get('/createtweets', (req, res) => {
+	console.log('GET /createtweets');
+	var pQuery = 'CREATE TABLE IF NOT EXISTS tweets(user VARCHAR (255), url VARCHAR(255), hashtag VARCHAR(255), score numeric(2,1), desc VARCHAR);';
+	
+	pool.query(pQuery, (err, result) => {
+		if (err) {
+			console.log(err);
+			res.send(err);
+		}
+		else {
+			console.log('tweets table has been created');
+			res.send('tweets table has been created');
 		}
 	}); 
 });
