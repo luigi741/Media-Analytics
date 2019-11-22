@@ -51,7 +51,7 @@ app.get('/schema', (req, res) => {
 			res.send(err);
 		}
 		else {
-			for (var n = 0; n < results.rows.length; n++) {
+			for (var n = 0; n < result.rows.length; n++) {
 				console.log(result.rows[n]);
 				res.send(result.rows[n]);
 			}
