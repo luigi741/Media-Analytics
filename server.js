@@ -99,7 +99,7 @@ app.get('/tweets', (req, res) => {
 	console.log(req.query);
 	// const twitterAPI = 'https://api.twitter.com/1.1/search/tweets.json?q=%23ai%20-filter%3Aretweets&result_type=recent&tweet_mode=extended';
 
-	const twitterAPI = `https://api.twitter.com/1.1/search/tweets.json?q=3%23${req.query.keyword}%20-filter%3Aretweets&result_type=popular&tweet_mode=extended&lang=en`;
+	const twitterAPI = `https://api.twitter.com/1.1/search/tweets.json?q=3%23${req.query.keyword}%20-filter%3Aretweets&result_type=top&tweet_mode=extended&lang=en`;
 
 	var options = {
 		url: twitterAPI,
