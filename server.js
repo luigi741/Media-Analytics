@@ -38,7 +38,7 @@ app.get('/sql', (req, res) => {
 			for (var n = 0; n < result.rows.length; n++) {
 				console.log(result.rows[n]);
 			}
-			res.send(result.rows[0]);
+			res.json(result);
 		}
 	}); 
 });
