@@ -137,7 +137,7 @@ app.get('/tweets', (req, res) => {
 				link  = 'https://twitter.com/' + statuses[i].user.screen_name + '/status/' + statuses[i].id_str;
 				for (var k = 0; k < statuses[i].entities.hashtags.length; k++){
 					temptags = hashtags; 
-					hashtags = temptags.concat(', ' + statuses[i].entities.hashtags[k].text);
+					hashtags = temptags + ', ' + statuses[i].entities.hashtags[k].text;
 				}
 				description = statuses[i].full_text;
 				score = 0;
