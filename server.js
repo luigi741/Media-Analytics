@@ -70,7 +70,7 @@ app.get('/tweets', (req, res) => {
 				}
 				console.log('\n');
 				console.log(statuses[i].user.screen_name + '\n');
-				console.log('https://twitter.com/' + statuses[i].user.screen_name + 'status/' + statuses[i].id_str + '\n');
+				console.log('https://twitter.com/' + statuses[i].user.screen_name + '/status/' + statuses[i].id_str + '\n');
 			}
 			console.log('Twitter API success.');
 
