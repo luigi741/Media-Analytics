@@ -5,6 +5,7 @@ const https			= require('https');
 const request		= require('request');
 const app 			= express();
 const PORT 			= 80;
+const cors			= require('cors');
 
 const { Pool, Client } = require('pg');
 const pool = new Pool({
