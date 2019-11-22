@@ -41,6 +41,22 @@ app.get('/sql', (req, res) => {
 	}); 
 });
 
+app.get('/schema', (req, res) => {
+	console.log('GET /schema');
+	var pQuery = 'SELECT schema_name from information_schema.schemata;';
+	
+	pool.query(pQuery, (err, result) => {
+		if (err) {
+			console.log(err);
+			res.send(err);
+		}
+		else {
+			console.log(result.rows[0]);
+			res.send(result.rows[0]);
+		}
+	}); 
+});
+
 // http://{COMPUTER ENGINE IP}/tweets?keyword={HASHTAG SEARCH}
 app.get('/tweets', (req, res) => {
 	console.log(req.query);
@@ -97,6 +113,7 @@ app.post('/testinsert', (req, res) => {
 		}
 	});
 });
+
 
 app.post('/cleartweets', (req, res) => {
 	console.log('POST /cleartweets');
