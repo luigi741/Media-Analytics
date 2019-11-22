@@ -79,7 +79,7 @@ app.get('/droptweets', (req, res) => {
 
 app.get('/createtweets', (req, res) => {
 	console.log('GET /createtweets');
-	var pQuery = 'CREATE TABLE tweets( username varchar(255), url varchar(255) PRIMARY KEY, hashtag varchar(255), score numeric(2,1), description varchar);';
+	var pQuery = 'CREATE TABLE tweets( username varchar, url varchar PRIMARY KEY, hashtag varchar, score numeric(2,1), description varchar);';
 	//user varchar(255), , desc varchar(255)
 	
 	pool.query(pQuery, (err, result) => {
@@ -123,8 +123,8 @@ app.get('/tweets', (req, res) => {
 			var username;
 			var temptags;
 			// = "INSERT INTO tweets VALUES ('twitter.com', 'test', 'ai', 'AI is cool');";
-
-			//'CREATE TABLE tweets( username varchar(255), url varchar(255) PRIMARY KEY, hashtag varchar(255), score numeric(2,1), description varchar);'
+ 
+			//'CREATE TABLE tweets( username varchar(255), url varchar PRIMARY KEY, hashtag varchar(255), score numeric(2,1), description varchar);'
 
 			for (var i = 0; i < statuses.length; i++) {
 				//console.log(statuses[i]); Prints .json for debugging
