@@ -62,15 +62,13 @@ app.get('/tweets', (req, res) => {
 			
 			console.log(`Posts: ${statuses.length}`);
 			for (var i = 0; i < statuses.length; i++) {
-				console.log(statuses[i]);
-				console.log(statuses[i].full_text + '\n');
-				console.log(statuses[i].source + '\n');
+				//console.log(statuses[i]); Prints .json for debugging
+				console.log('https://twitter.com/' + statuses[i].user.screen_name + '/status/' + statuses[i].id_str);
 				for (var k = 0; k < statuses[i].entities.hashtags.length; k++){
 					console.log(statuses[i].entities.hashtags[k].text + ', ');
 				}
-				console.log('\n');
-				console.log(statuses[i].user.screen_name + '\n');
-				console.log('https://twitter.com/' + statuses[i].user.screen_name + '/status/' + statuses[i].id_str + '\n');
+				console.log(statuses[i].full_text + '\n');
+				console.log(statuses[i].user.screen_name);
 			}
 			console.log('Twitter API success.');
 
@@ -96,6 +94,22 @@ app.post('/testinsert', (req, res) => {
 		else {
 			console.log('Successful insert!');
 			res.send('Successful insert!');
+		}
+	});
+});
+
+app.post('/cleartweets', (req, res) => {
+	console.log('POST /cleartweets');
+	var pQuery = "DELETE * FROM table_name;";
+
+	pool.query(pQuery, (err, results) => {
+		if (err) {
+			console.log(err);
+			res.send(err);
+		}
+		else {
+			console.log('Successful clear!');
+			res.send('Successful clear!');
 		}
 	});
 });
