@@ -66,10 +66,11 @@ app.get('/tweets', (req, res) => {
 				console.log(statuses[i].full_text + '\n');
 				console.log(statuses[i].source + '\n');
 				for (var k = 0; k < statuses[i].entities.hashtags.length; k++){
-					console.log(statuses[i].entities.hashtags[k].text + '\n');
+					console.log(statuses[i].entities.hashtags[k].text + ', ');
 				}
 				console.log('\n');
 				console.log(statuses[i].user.screen_name + '\n');
+				console.log('https://twitter.com/' + statuses[i].user.screen_name + 'status/' + statuses[i].id_str + '\n');
 			}
 			console.log('Twitter API success.');
 
