@@ -133,7 +133,6 @@ app.get('/tweets', (req, res) => {
 				// }
 				// console.log(statuses[i].full_text + '\n');
 				// console.log(statuses[i].user.screen_name);
-				if (statuses[i].user.locale)
 				
 				link  = 'https://twitter.com/' + statuses[i].user.screen_name + '/status/' + statuses[i].id_str;
 				hashtags = statuses[i].entities.hashtags[0].text;
