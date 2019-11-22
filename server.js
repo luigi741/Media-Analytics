@@ -77,7 +77,7 @@ app.get('/droptweets', (req, res) => {
 
 app.get('/createtweets', (req, res) => {
 	console.log('GET /createtweets');
-	var pQuery = 'CREATE TABLE IF NOT EXISTS tweets(user VARCHAR (255), url VARCHAR(255) PRIMARY KEY, hashtag VARCHAR(255), score numeric(2,1), desc VARCHAR);';
+	var pQuery = 'CREATE TABLE tweets(user VARCHAR (255), url VARCHAR(255) PRIMARY KEY, hashtag VARCHAR(255), score numeric(2,1), desc VARCHAR);';
 	
 	pool.query(pQuery, (err, result) => {
 		if (err) {
