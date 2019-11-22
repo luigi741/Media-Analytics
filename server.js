@@ -147,7 +147,7 @@ app.get('/tweets', (req, res) => {
 				pool.query(pQuery, (err, results) => {
 					if (err) {
 						console.log(err);
-						res.send(err);
+						//res.send(err);
 					}
 					else {
 						console.log('Successful insert!');
