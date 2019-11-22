@@ -119,7 +119,9 @@ app.get('/tweets', (req, res) => {
 			var link;
 			var hashtags;
 			var description;
+			var score;
 			var username;
+			var temptags;
 			// = "INSERT INTO tweets VALUES ('twitter.com', 'test', 'ai', 'AI is cool');";
 
 			//'CREATE TABLE tweets( username varchar(255), url varchar(255) PRIMARY KEY, hashtag varchar(255), score numeric(2,1), description varchar);'
@@ -132,6 +134,15 @@ app.get('/tweets', (req, res) => {
 				// }
 				// console.log(statuses[i].full_text + '\n');
 				// console.log(statuses[i].user.screen_name);
+				link  = 'https://twitter.com/' + statuses[i].user.screen_name + '/status/' + statuses[i].id_str;
+				for (var k = 0; k < statuses[i].entities.hashtags.length; k++){
+					temptags = hashtags; 
+					hashtags = temptags.concat(', ' + statuses[i].entities.hashtags[k].text);
+				}
+				description = statuses[i].full_text;
+				score = 0;
+				username = statuses[i].user.screen_name;
+
 				pQuery = "INSERT INTO tweets VALUES('" + username + "', '" + link + "', '" + hashtags + "', '" + score + "', '" + description + "');";
 				pool.query(pQuery, (err, results) => {
 					if (err) {
