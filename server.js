@@ -77,7 +77,7 @@ app.get('/droptweets', (req, res) => {
 
 app.get('/createtweets', (req, res) => {
 	console.log('GET /createtweets');
-	var pQuery = 'CREATE TABLE tweets( url varchar(255) PRIMARY KEY, hashtag varchar(255), score numeric(2,1), user varchar(255) );';
+	var pQuery = 'CREATE TABLE tweets( username varchar(255), url varchar(255) PRIMARY KEY, hashtag varchar(255), score numeric(2,1), description varchar);';
 	//user varchar(255), , desc varchar(255)
 	
 	pool.query(pQuery, (err, result) => {
