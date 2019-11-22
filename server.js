@@ -121,7 +121,6 @@ app.get('/tweets', (req, res) => {
 			var description;
 			var score;
 			var username;
-			var temptags;
 			// = "INSERT INTO tweets VALUES ('twitter.com', 'test', 'ai', 'AI is cool');";
  
 			//'CREATE TABLE tweets( username varchar(255), url varchar PRIMARY KEY, hashtag varchar(255), score numeric(2,1), description varchar);'
@@ -135,8 +134,9 @@ app.get('/tweets', (req, res) => {
 				// console.log(statuses[i].full_text + '\n');
 				// console.log(statuses[i].user.screen_name);
 				link  = 'https://twitter.com/' + statuses[i].user.screen_name + '/status/' + statuses[i].id_str;
-				for (var k = 0; k < statuses[i].entities.hashtags.length; k++){
-					temptags = hashtags; 
+				hashtags = statuses[i].entities.hashtags[0].text;
+				for (var k = 1; k < statuses[i].entities.hashtags.length; k++){
+					var temptags = hashtags; 
 					hashtags = temptags + ', ' + statuses[i].entities.hashtags[k].text;
 				}
 				description = statuses[i].full_text;
