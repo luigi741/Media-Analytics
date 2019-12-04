@@ -7,6 +7,7 @@ const app 			= express();
 const PORT 			= 80;
 const cors			= require('cors');
 
+//Sets the parameters for accessing the database. 
 const { Pool, Client } = require('pg');
 const pool = new Pool({
 	user:       process.env.SQL_USER,
@@ -16,26 +17,6 @@ const pool = new Pool({
 	port:       process.env.INSTANCE_PORT
 });
 
-// // Add headers
-// app.use(function (req, res, next) {
-
-//     // Website you wish to allow to connect
-//     res.setHeader('Access-Control-Allow-Origin', 'http://35.237.126.188:4200/');
-
-//     // Request methods you wish to allow
-//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-//     // Request headers you wish to allow
-//     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
-//     // Set to true if you need the website to include cookies in the requests sent
-//     // to the API (e.g. in case you use sessions)
-//     res.setHeader('Access-Control-Allow-Credentials', true);
-
-//     // Pass to next layer of middleware
-//     next();
-// });
-
 app.use(cors());
 
 app.use(
@@ -43,11 +24,13 @@ app.use(
 	bodyParser.json()
 );
 
+//A function that displays when the frontend is not active. 
 app.get('/', (req, res) => {
 	console.log('GET /');
 	res.send('GET /');
 });
 
+//A debugging function to get results from the tweets table
 app.get('/sql', (req, res) => {
 	console.log('GET /sql');
 	var pQuery = 'SELECT * FROM tweets;';
@@ -66,6 +49,7 @@ app.get('/sql', (req, res) => {
 	}); 
 });
 
+//This gets the currently active table's schema. 
 app.get('/schema', (req, res) => {
 	console.log('GET /schema');
 	var pQuery = 'SELECT column_name, data_type, character_maximum_length FROM INFORMATION_SCHEMA.COLUMNS where table_name = \'tweets\';';
@@ -84,6 +68,7 @@ app.get('/schema', (req, res) => {
 	}); 
 });
 
+//This drops the tweet table to allow for new data to be populated. 
 app.get('/droptweets', (req, res) => {
 	console.log('GET /droptweets');
 	var pQuery = 'DROP TABLE IF EXISTS tweets';
@@ -99,7 +84,7 @@ app.get('/droptweets', (req, res) => {
 	}); 
 });
 
-
+//This is used to create tweets, function primarily used during testing phase. 
 app.get('/createtweets', (req, res) => {
 	console.log('GET /createtweets');
 	var pQuery = 'CREATE TABLE tweets( username varchar, url varchar, hashtag varchar, score numeric(2,1), description varchar);';
@@ -117,6 +102,8 @@ app.get('/createtweets', (req, res) => {
 	}); 
 });
 
+//This is used to grab tweets from the Twitter API using the specified search term. It includes API calls. 
+//It also adds the tweets to the tweets table on the database. 
 // http://{COMPUTER ENGINE IP}/tweets?keyword={HASHTAG SEARCH}
 app.get('/tweets', (req, res) => {
 	console.log(req.query);
@@ -144,6 +131,8 @@ app.get('/tweets', (req, res) => {
 			var username;
 
 			for (var i = 0; i < statuses.length; i++) {
+				
+				//Debugging Code
 				//console.log(statuses[i]); Prints .json for debugging
 				// console.log('https://twitter.com/' + statuses[i].user.screen_name + '/status/' + statuses[i].id_str);
 				// for (var k = 0; k < statuses[i].entities.hashtags.length; k++){
@@ -166,7 +155,6 @@ app.get('/tweets', (req, res) => {
 				pool.query(pQuery, (err, results) => {
 					if (err) {
 						console.log(err);
-						//res.send(err);
 					}
 					else {
 						console.log('Successful insert!');
@@ -185,6 +173,7 @@ app.get('/tweets', (req, res) => {
 	request(options, requestCallback);
 });
 
+//Used to insert a tweet into the database. 
 app.post('/testinsert', (req, res) => {
 	console.log('POST /testinsert');
 	var pQuery = "INSERT INTO tweets VALUES ('twitter.com', 'test', 'ai', 'AI is cool');";
@@ -201,7 +190,7 @@ app.post('/testinsert', (req, res) => {
 	});
 });
 
-
+//Used to clear the tweets in the database
 app.get('/cleartweets', (req, res) => {
 	console.log('GET /cleartweets');
 	var pQuery = "DELETE FROM tweets;";
@@ -218,14 +207,7 @@ app.get('/cleartweets', (req, res) => {
 	});
 });
 
+//Logs the currently active port. 
 app.listen(PORT, () => {
 	console.log('Application running on port: ' + PORT);
 });
-
-
-//================================================
-// screen - Linux commands
-// 
-// $ screen -ls => list all screens
-// $ screen -r {SCREEN #} => Reattach
-// CTRL + A + D => Detach
