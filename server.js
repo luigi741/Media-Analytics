@@ -120,7 +120,6 @@ app.get('/createtweets', (req, res) => {
 // http://{COMPUTER ENGINE IP}/tweets?keyword={HASHTAG SEARCH}
 app.get('/tweets', (req, res) => {
 	console.log(req.query);
-	// const twitterAPI = 'https://api.twitter.com/1.1/search/tweets.json?q=%23ai%20-filter%3Aretweets&result_type=recent&tweet_mode=extended';
 
 	const twitterAPI = `https://api.twitter.com/1.1/search/tweets.json?q=3%23${req.query.keyword}%20-filter%3Aretweets&result_type=recent&tweet_mode=extended&lang=en`;
 	var options = {
@@ -143,9 +142,6 @@ app.get('/tweets', (req, res) => {
 			var description;
 			var score;
 			var username;
-			// = "INSERT INTO tweets VALUES ('twitter.com', 'test', 'ai', 'AI is cool');";
- 
-			//'CREATE TABLE tweets( username varchar(255), url varchar PRIMARY KEY, hashtag varchar(255), score numeric(2,1), description varchar);'
 
 			for (var i = 0; i < statuses.length; i++) {
 				//console.log(statuses[i]); Prints .json for debugging
