@@ -6,7 +6,7 @@ This will allow all the server API functionality to be accessible.
 
 This portion of the server is run on Port 80 (the default port).
 
-You must set a .env with the following variables for this API to function properly: 
+You must set a `.env` file with the following variables for this API to function properly: 
 
 ```
 INSTANCE_ADDR=<public ip or host domain>
