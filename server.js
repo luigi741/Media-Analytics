@@ -173,6 +173,84 @@ app.get('/tweets', (req, res) => {
 	request(options, requestCallback);
 });
 
+app.post('/sentiment', (req, res) => {
+	const NLAPI = `https://language.googleapis.com/v1/documents:analyzeSentiment?key= ${process.env.key}`;
+	var body = {
+		"document": {
+			"type": "PLAIN_TEXT",
+			"language": "en",
+			"content": "string"
+	  },
+	  "encodingType": "UTF16"
+	}
+
+	body.document.content = "hello world";
+
+	function requestCallback(error, response, body) {
+		if (!error && response.statusCode == 200) {
+			var info = JSON.parse(body);
+			var statuses = info.statuses]
+			
+			console.log(`Posts: ${statuses.length}`);
+
+			var description;
+			var score;
+			var username;
+
+			pQuery = "UPDATE tweets SET score = " + score + " WHERE description = " + description + ";";	
+			//pQuery = "INSERT INTO tweets VALUES('" + username + "', '" + link + "', '" + hashtags + "', '" + score + "', '" + description + "');";
+			pool.query(pQuery, (err, results) => {
+				if (err) {
+					console.log(err);
+				}
+				else {
+					console.log('Successful insert!');
+				}
+			});
+
+			// for (var i = 0; i < statuses.length; i++) {
+				
+			// 	//Debugging Code
+			// 	//console.log(statuses[i]); Prints .json for debugging
+			// 	// console.log('https://twitter.com/' + statuses[i].user.screen_name + '/status/' + statuses[i].id_str);
+			// 	// for (var k = 0; k < statuses[i].entities.hashtags.length; k++){
+			// 	// 	console.log(statuses[i].entities.hashtags[k].text + ', ');
+			// 	// }
+			// 	// console.log(statuses[i].full_text + '\n');
+			// 	// console.log(statuses[i].user.screen_name);
+				
+			// 	link  = 'https://twitter.com/' + statuses[i].user.screen_name + '/status/' + statuses[i].id_str;
+			// 	hashtags = statuses[i].entities.hashtags[0].text;
+			// 	for (var k = 1; k < statuses[i].entities.hashtags.length; k++){
+			// 		var temptags = hashtags; 
+			// 		hashtags = temptags + ', ' + statuses[i].entities.hashtags[k].text;
+			// 	}
+			// 	description = statuses[i].full_text;
+			// 	score = 0;
+			// 	username = statuses[i].user.screen_name;
+
+			// 	pQuery = "INSERT INTO tweets VALUES('" + username + "', '" + link + "', '" + hashtags + "', '" + score + "', '" + description + "');";
+			// 	pool.query(pQuery, (err, results) => {
+			// 		if (err) {
+			// 			console.log(err);
+			// 		}
+			// 		else {
+			// 			console.log('Successful insert!');
+			// 		}
+			// 	});
+			// }
+			console.log('Google NL API success.');
+
+			res.send('Sentiment Analysis successful!');
+		}
+		else {
+			res.send('There was an error making a request to the TGoogle NL API');
+		}
+	}
+
+	request(options, requestCallback);
+});
+
 //Used to insert a tweet into the database. 
 app.post('/testinsert', (req, res) => {
 	console.log('POST /testinsert');
