@@ -173,8 +173,69 @@ app.get('/tweets', (req, res) => {
 	request(options, requestCallback);
 });
 
+app.get('/tweets2', (req, res) => {
+	console.log('GET /tweets2');
+	var options = { 
+		method: 'GET',
+		url: 'https://api.twitter.com/1.1/search/tweets.json',
+		qs: {
+			q: '%23ai%20-filter%3Aretweets',
+			result_type: 'recent',
+			tweet_mode: 'extended'
+		},
+		headers: { 
+			Authorization: 'Bearer AAAAAAAAAAAAAAAAAAAAADu9AwEAAAAAjAPD6wEr6H3sB3bAaOKfmXsPeYg%3DRnXFXsZP5ZdlDXjflWp4GV93UrL0kELuPXTfgDEnhLyGOaby3O' 
+		}
+	};
+
+	request(options, (error, response, body) => {
+		if (error) {
+			throw new Error(error);
+		}
+		else {
+			let responseBody = JSON.parse(body);
+			let numTweets = responseBody.statuses.length;
+			let sentimentScores = [];
+
+			console.log(`Number of tweets: ${responseBody.statuses.length}`);
+			
+			for (let i = 0; i < numTweets; i++) {
+				let googleBody = {
+					"document": {
+						"type": "PLAIN_TEXT",
+						"language": "en",
+						"content": `${responseBody.statuses[i].full_text}`
+					},
+					"encodingType": "UTF16"
+				}
+				
+				let googleOptions = {
+					method: 'POST',
+					url: `https://language.googleapis.com/v1/documents:analyzeSentiment?key=${process.env.G_API_KEY}`,
+					json: googleBody 
+				}
+
+				request(googleOptions, (error, response, body) => {
+					if (error) {
+						throw new Error(error);
+					}
+					else {
+						console.log(body);
+						
+						sentimentScores[i] = {
+							
+						}
+					}
+				});
+			}
+
+			res.send(responseBody.statuses[0].full_text);
+		}
+	});
+});
+
 app.post('/sentiment', (req, res) => {
-	const NLAPI = `https://language.googleapis.com/v1/documents:analyzeSentiment?key= ${process.env.key}`;
+	const NLAPI = `https://language.googleapis.com/v1/documents:analyzeSentiment?key=${process.env.key}`;
 	var body = {
 		"document": {
 			"type": "PLAIN_TEXT",
@@ -189,7 +250,7 @@ app.post('/sentiment', (req, res) => {
 	function requestCallback(error, response, body) {
 		if (!error && response.statusCode == 200) {
 			var info = JSON.parse(body);
-			var statuses = info.statuses]
+			var statuses = info.statuses;
 			
 			console.log(`Posts: ${statuses.length}`);
 
