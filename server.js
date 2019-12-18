@@ -223,11 +223,15 @@ app.get('/tweets2', (req, res) => {
 				var info = JSON.parse(body);
 				
 				link  = 'https://twitter.com/' + statuses[i].user.screen_name + '/status/' + statuses[i].id_str;
-				hashtags = statuses[i].entities.hashtags[0].text;
+				
+				if (statuses[i].entities.hashtags[0] != null) {
+					hashtags = statuses[i].entities.hashtags[0].text;
+				}
 				for (var k = 1; k < statuses[i].entities.hashtags.length; k++){
 					var temptags = hashtags; 
 					hashtags = temptags + ', ' + statuses[i].entities.hashtags[k].text;
 				}
+				
 				description = statuses[i].full_text;
 				username = statuses[i].user.screen_name;
 				
