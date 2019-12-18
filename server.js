@@ -219,8 +219,6 @@ app.get('/tweets2', (req, res) => {
 					},
 					"encodingType": "UTF16"
 				}
-
-				var info = JSON.parse(body);
 				
 				link  = 'https://twitter.com/' + statuses[i].user.screen_name + '/status/' + statuses[i].id_str;
 				
