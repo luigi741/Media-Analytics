@@ -174,17 +174,20 @@ app.get('/tweets', (req, res) => {
 });
 
 app.get('/tweets2', (req, res) => {
+
 	console.log('GET /tweets2');
+	console.log(req.query);
+
 	var options = { 
 		method: 'GET',
 		url: 'https://api.twitter.com/1.1/search/tweets.json',
 		qs: {
-			q: '%23ai%20-filter%3Aretweets',
+			q: `%23${req.query.keyword}%20-filter%3Aretweets`,
 			result_type: 'recent',
 			tweet_mode: 'extended'
 		},
 		headers: { 
-			Authorization: 'Bearer AAAAAAAAAAAAAAAAAAAAADu9AwEAAAAAjAPD6wEr6H3sB3bAaOKfmXsPeYg%3DRnXFXsZP5ZdlDXjflWp4GV93UrL0kELuPXTfgDEnhLyGOaby3O' 
+			Authorization: `Bearer ${process.env.BEARER_TOKEN}`
 		}
 	};
 
@@ -225,6 +228,8 @@ app.get('/tweets2', (req, res) => {
 						sentimentScores[i] = {
 							
 						}
+
+						console.log("sentiment scores here" + sentimentScores[i]);
 					}
 				});
 			}
