@@ -197,20 +197,39 @@ app.get('/tweets2', (req, res) => {
 		}
 		else {
 			let responseBody = JSON.parse(body);
-			let numTweets = responseBody.statuses.length;
+			var statuses = responseBody.statuses
+			let numTweets = statuses.length;
 			let sentimentScores = [];
 
-			console.log(`Number of tweets: ${responseBody.statuses.length}`);
+			var pQuery;
+			var link;
+			var hashtags;
+			var description;
+			var score;
+			var username;
+
+			console.log(`Number of tweets: ${statuses.length}`);
 			
 			for (let i = 0; i < numTweets; i++) {
 				let googleBody = {
 					"document": {
 						"type": "PLAIN_TEXT",
 						"language": "en",
-						"content": `${responseBody.statuses[i].full_text}`
+						"content": `${statuses[i].full_text}`
 					},
 					"encodingType": "UTF16"
 				}
+
+				var info = JSON.parse(body);
+				
+				link  = 'https://twitter.com/' + statuses[i].user.screen_name + '/status/' + statuses[i].id_str;
+				hashtags = statuses[i].entities.hashtags[0].text;
+				for (var k = 1; k < statuses[i].entities.hashtags.length; k++){
+					var temptags = hashtags; 
+					hashtags = temptags + ', ' + statuses[i].entities.hashtags[k].text;
+				}
+				description = statuses[i].full_text;
+				username = statuses[i].user.screen_name;
 				
 				let googleOptions = {
 					method: 'POST',
@@ -225,11 +244,25 @@ app.get('/tweets2', (req, res) => {
 					else {
 						console.log(body);
 						
+						score = body.documentSentiment.score;
+
 						sentimentScores[i] = {
 							
 						}
 
-						console.log("sentiment scores here" + sentimentScores[i][1]);
+						console.log("sentiment score body:\t" + body.documentSentiment.score);
+						console.log("sentiment score table:\t" + score);
+					}
+				});
+
+				//Insert into table. 
+				pQuery = "INSERT INTO tweets VALUES('" + username + "', '" + link + "', '" + hashtags + "', '" + score + "', '" + description + "');";
+				pool.query(pQuery, (err, results) => {
+					if (err) {
+						console.log(err);
+					}
+					else {
+						console.log('Successful insert!');
 					}
 				});
 			}
