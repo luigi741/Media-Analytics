@@ -190,7 +190,7 @@ app.get('/tweets2', (req, res) => {
 
 	request(options, (error, response, body) => {
 		if (error) {
-			throw new Error(error);
+			throw new Error(error);    
 		}
 		else {
 			let responseBody = JSON.parse(body);
