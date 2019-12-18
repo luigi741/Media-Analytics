@@ -256,17 +256,17 @@ app.get('/tweets2', (req, res) => {
 
 						console.log("sentiment score body:\t" + body.documentSentiment.score);
 						console.log("sentiment score table:\t" + score);
-					}
-				});
 
-				//Insert into table. 
-				pQuery = "INSERT INTO tweets VALUES('" + username + "', '" + link + "', '" + hashtags + "', '" + score + "', '" + description + "');";
-				pool.query(pQuery, (err, results) => {
-					if (err) {
-						console.log(err);
-					}
-					else {
-						console.log('Successful insert!');
+						//Insert into table. 
+						pQuery = "INSERT INTO tweets VALUES('" + username + "', '" + link + "', '" + hashtags + "', '" + score + "', '" + description + "');";
+						pool.query(pQuery, (err, results) => {
+							if (err) {
+								console.log(err);
+							}
+							else {
+								console.log('Successful insert!');
+							}
+						});
 					}
 				});
 			}
