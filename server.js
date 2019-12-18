@@ -229,7 +229,7 @@ app.get('/tweets2', (req, res) => {
 							
 						}
 
-						console.log("sentiment scores here" + sentimentScores[i]);
+						console.log("sentiment scores here" + sentimentScores[i][1]);
 					}
 				});
 			}
