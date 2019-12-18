@@ -220,19 +220,6 @@ app.get('/tweets2', (req, res) => {
 					"encodingType": "UTF16"
 				}
 				
-				link  = 'https://twitter.com/' + statuses[i].user.screen_name + '/status/' + statuses[i].id_str;
-				
-				if (statuses[i].entities.hashtags[0] != null) {
-					hashtags = statuses[i].entities.hashtags[0].text;
-				}
-				for (var k = 1; k < statuses[i].entities.hashtags.length; k++){
-					var temptags = hashtags; 
-					hashtags = temptags + ', ' + statuses[i].entities.hashtags[k].text;
-				}
-				
-				description = statuses[i].full_text;
-				username = statuses[i].user.screen_name;
-				
 				let googleOptions = {
 					method: 'POST',
 					url: `https://language.googleapis.com/v1/documents:analyzeSentiment?key=${process.env.G_API_KEY}`,
@@ -254,6 +241,19 @@ app.get('/tweets2', (req, res) => {
 
 						console.log("sentiment score body:\t" + body.documentSentiment.score);
 						console.log("sentiment score table:\t" + score);
+
+						link = 'https://twitter.com/' + statuses[i].user.screen_name + '/status/' + statuses[i].id_str;
+
+						if (statuses[i].entities.hashtags[0] != null) {
+							hashtags = statuses[i].entities.hashtags[0].text;
+						}
+						for (var k = 1; k < statuses[i].entities.hashtags.length; k++) {
+							var temptags = hashtags;
+							hashtags = temptags + ', ' + statuses[i].entities.hashtags[k].text;
+						}
+
+						description = statuses[i].full_text;
+						username = statuses[i].user.screen_name;
 
 						//Insert into table. 
 						pQuery = "INSERT INTO tweets VALUES('" + username + "', '" + link + "', '" + hashtags + "', '" + score + "', '" + description + "');";
