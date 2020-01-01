@@ -175,11 +175,16 @@ app.get('/tweets', (req, res) => {
 
 app.get('/tweets2', (req, res) => {
 	console.log('GET /tweets2');
+	console.log(req.query);
+
+	let hashtag = req.query.keyword;
+	let formattedTag = hashtag.replace(' ', '');
+
 	var options = { 
 		method: 'GET',
 		url: 'https://api.twitter.com/1.1/search/tweets.json',
 		qs: {
-			q: '%23ai%20-filter%3Aretweets',
+			q: `%23${formattedTag}%20-filter%3Aretweets`,
 			result_type: 'recent',
 			tweet_mode: 'extended'
 		},
@@ -196,8 +201,16 @@ app.get('/tweets2', (req, res) => {
 			let responseBody = JSON.parse(body);
 			let numTweets = responseBody.statuses.length;
 			let sentimentScores = [];
+			let reqComplete = 0;
 
-			console.log(`Number of tweets: ${responseBody.statuses.length}`);
+			try {
+				console.log(`Number of tweets: ${responseBody.statuses.length}`);
+				// res.send(responseBody.statuses);
+			} 
+			catch (error) {
+				console.log('No results.');
+				// res.send('Error');
+			}
 			
 			for (let i = 0; i < numTweets; i++) {
 				let googleBody = {
@@ -215,21 +228,27 @@ app.get('/tweets2', (req, res) => {
 					json: googleBody 
 				}
 
-				request(googleOptions, (error, response, body) => {
+				request(googleOptions, (error, response, googleResBody) => {
 					if (error) {
 						throw new Error(error);
 					}
 					else {
-						console.log(body);
-						
-						sentimentScores[i] = {
-							
+						// console.log('\n' + googleResBody.sentences[0].text.content + ' | Score: ' + googleResBody.documentSentiment.score);
+
+						console.log(`${i}: ${googleResBody.documentSentiment.score}`);
+						sentimentScores.push(googleResBody.documentSentiment.score);
+
+						if (reqComplete == numTweets - 1) {
+							// console.log('======');
+							// console.log(sentimentScores);
+							responseBody.statuses[0].scores = sentimentScores;
+							res.send(responseBody.statuses);
 						}
 					}
+
+					reqComplete++;
 				});
 			}
-
-			res.send(responseBody.statuses[0].full_text);
 		}
 	});
 });
@@ -343,6 +362,14 @@ app.get('/cleartweets', (req, res) => {
 			console.log('Successful clear!');
 			res.send('Successful clear!');
 		}
+	});
+});
+
+app.get('/getjson', (req, res) => {
+	console.log('GET /getjson');
+	console.log(req.query);
+	res.send({
+		"status": "200"
 	});
 });
 
