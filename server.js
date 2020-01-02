@@ -233,19 +233,33 @@ app.get('/tweets2', (req, res) => {
 						throw new Error(error);
 					}
 					else {
-						// console.log('\n' + googleResBody.sentences[0].text.content + ' | Score: ' + googleResBody.documentSentiment.score);
+						// console.log(`${i}: ${googleResBody.documentSentiment.score}`);
+						responseBody.statuses[i].sentimentScore = googleResBody.documentSentiment.score;
 
-						console.log(`${i}: ${googleResBody.documentSentiment.score}`);
-						sentimentScores.push(googleResBody.documentSentiment.score);
+						// DB Schema => username | url | hashtag | score | description
+						let pQuery = 
+							`INSERT INTO tweets VALUES ('${responseBody.statuses[i].user.screen_name}', ` + 
+							`'https://twitter.com/${responseBody.statuses[i].user.screen_name}/status/${responseBody.statuses[i].id_str}', ` +
+							`'#${formattedTag}', ` + 
+							`'${googleResBody.documentSentiment.score}', ` +
+							`'${responseBody.statuses[i].full_text}');`;
+
+						pool.query(pQuery, (err, results) => {
+							if (err) {
+								console.log(err)
+							}
+							else {
+								console.log('Twitter data inserted successfully.');
+							}
+						});
+
+						console.log(pQuery);
 
 						if (reqComplete == numTweets - 1) {
-							// console.log('======');
-							// console.log(sentimentScores);
 							responseBody.statuses[0].scores = sentimentScores;
 							res.send(responseBody.statuses);
 						}
 					}
-
 					reqComplete++;
 				});
 			}
