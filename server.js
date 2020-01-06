@@ -186,7 +186,9 @@ app.get('/tweets2', (req, res) => {
 		qs: {
 			q: `%23${formattedTag}%20-filter%3Aretweets`,
 			result_type: 'recent',
-			tweet_mode: 'extended'
+			tweet_mode: 'extended',
+			lang: 'en',
+			count: 100
 		},
 		headers: { 
 			Authorization: 'Bearer AAAAAAAAAAAAAAAAAAAAADu9AwEAAAAAjAPD6wEr6H3sB3bAaOKfmXsPeYg%3DRnXFXsZP5ZdlDXjflWp4GV93UrL0kELuPXTfgDEnhLyGOaby3O' 
@@ -263,6 +265,21 @@ app.get('/tweets2', (req, res) => {
 					reqComplete++;
 				});
 			}
+		}
+	});
+});
+
+app.get('/hashtags', (req, res) => {
+	console.log('GET /hashtags');
+	
+	let postgresQuery = 'SELECT DISTINCT hashtag FROM tweets;';
+	pool.query(postgresQuery, (err, results) => {
+		if (err) {
+			console.log(err);
+			res.sendStatus(500);
+		}
+		else {
+			res.send(results.rows);
 		}
 	});
 });
