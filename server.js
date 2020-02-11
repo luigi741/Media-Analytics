@@ -238,13 +238,16 @@ app.get('/tweets2', (req, res) => {
 						// console.log(`${i}: ${googleResBody.documentSentiment.score}`);
 						responseBody.statuses[i].sentimentScore = googleResBody.documentSentiment.score;
 
-						// DB Schema => username | url | hashtag | score | description
+						// DB Schema => username | url | hashtag | score | description | searchedKeyword | date | location
 						let pQuery = 
 							`INSERT INTO tweets VALUES ('${responseBody.statuses[i].user.screen_name}', ` + 
 							`'https://twitter.com/${responseBody.statuses[i].user.screen_name}/status/${responseBody.statuses[i].id_str}', ` +
 							`'#${formattedTag}', ` + 
 							`'${googleResBody.documentSentiment.score}', ` +
-							`'${responseBody.statuses[i].full_text}');`;
+							`'${responseBody.statuses[i].full_text}', ` +
+							`'${req.query.keyword}', ` +
+							`'${responseBody.statuses[i].created_at}', ` +
+							`'${responseBody.statuses[i].user.location}');`;
 
 						pool.query(pQuery, (err, results) => {
 							if (err) {
@@ -273,6 +276,22 @@ app.get('/hashtags', (req, res) => {
 	console.log('GET /hashtags');
 	
 	let postgresQuery = 'SELECT DISTINCT hashtag FROM tweets;';
+	pool.query(postgresQuery, (err, results) => {
+		if (err) {
+			console.log(err);
+			res.sendStatus(500);
+		}
+		else {
+			res.send(results.rows);
+		}
+	});
+});
+
+app.get('/scores', (req, res) => {
+	console.log('GET /scores');
+	console.log(req.query);
+
+	let postgresQuery = `SELECT score FROM tweets WHERE hashtag = '#${req.query.hashtag}';`;
 	pool.query(postgresQuery, (err, results) => {
 		if (err) {
 			console.log(err);
