@@ -258,7 +258,7 @@ app.get('/tweets2', (req, res) => {
 							'#${formattedTag}',
 							'${googleResBody.documentSentiment.score}',
 							'${responseBody.statuses[i].full_text}',
-							null
+							null,
 							'${responseBody.statuses[i].created_at}');`;
 
 						pool.query(pQuery, (err, results) => {
