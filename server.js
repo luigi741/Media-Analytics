@@ -239,6 +239,8 @@ app.get('/tweets2', (req, res) => {
 						responseBody.statuses[i].sentimentScore = googleResBody.documentSentiment.score;
 
 						// DB Schema => username | url | hashtag | score | description | searchedKeyword | date | location
+						
+						/*
 						let pQuery = 
 							`INSERT INTO tweets VALUES ('${responseBody.statuses[i].user.screen_name}', ` + 
 							`'https://twitter.com/${responseBody.statuses[i].user.screen_name}/status/${responseBody.statuses[i].id_str}', ` +
@@ -248,6 +250,16 @@ app.get('/tweets2', (req, res) => {
 							`'${req.query.keyword}', ` +
 							`'${responseBody.statuses[i].created_at}', ` +
 							`'${responseBody.statuses[i].user.location}');`;
+						*/
+
+						let pQuery = 
+							`INSERT INTO tweets VALUES ('${responseBody.statuses[i].user.screen_name}',
+							'https://twitter.com/${responseBody.statuses[i].user.screen_name}/status/${responseBody.statuses[i].id_str}',
+							'#${formattedTag}',
+							'${googleResBody.documentSentiment.score}',
+							'${responseBody.statuses[i].full_text}',
+							null
+							'${responseBody.statuses[i].created_at}');`;
 
 						pool.query(pQuery, (err, results) => {
 							if (err) {
